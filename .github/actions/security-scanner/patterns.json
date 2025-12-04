@@ -1,0 +1,52 @@
+{
+  "patterns": [
+    {
+      "name": "AWS Access Key",
+      "pattern": "AKIA[0-9A-Z]{16}",
+      "severity": "critical",
+      "description": "Hardcoded AWS Access Key detected"
+    },
+    {
+      "name": "Private Key",
+      "pattern": "-----BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY-----",
+      "severity": "critical",
+      "description": "Private key file detected"
+    },
+    {
+      "name": "Generic API Key",
+      "pattern": "[aA][pP][iI][-_]?[kK][eE][yY]\\s*[:=]\\s*['\"][a-zA-Z0-9]{20,}['\"]",
+      "severity": "high",
+      "description": "Potential API key in code"
+    },
+    {
+      "name": "Generic Secret",
+      "pattern": "[sS][eE][cC][rR][eE][tT]\\s*[:=]\\s*['\"][^'\"]{8,}['\"]",
+      "severity": "high",
+      "description": "Potential hardcoded secret"
+    },
+    {
+      "name": "Password in Code",
+      "pattern": "[pP][aA][sS][sS][wW][oO][rR][dD]\\s*[:=]\\s*['\"][^'\"]{4,}['\"]",
+      "severity": "medium",
+      "description": "Hardcoded password detected"
+    },
+    {
+      "name": "Database Connection String",
+      "pattern": "(mongodb|mysql|postgresql|jdbc)://[^\\s]+:[^\\s]+@",
+      "severity": "high",
+      "description": "Database connection string with credentials"
+    },
+    {
+      "name": "JWT Token",
+      "pattern": "eyJ[a-zA-Z0-9_-]*\\.eyJ[a-zA-Z0-9_-]*\\.[a-zA-Z0-9_-]*",
+      "severity": "high",
+      "description": "JWT token detected in code"
+    },
+    {
+      "name": "Bearer Token",
+      "pattern": "[bB]earer\\s+[a-zA-Z0-9_\\-\\.]{20,}",
+      "severity": "high",
+      "description": "Bearer token in code"
+    }
+  ]
+}
