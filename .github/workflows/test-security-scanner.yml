@@ -1,0 +1,47 @@
+name: Test Security Scanner
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create test file with fake secret
+        run: |
+          mkdir -p test-scan
+          cat << 'EOF' > test-scan/config.js
+          // Configuration file
+          const config = {
+            apiKey: "test_key_1234567890abcdef",
+            password: "MyPassword123",
+            dbConnection: "postgresql://user:pass@localhost/db"
+          };
+          module.exports = config;
+          EOF
+      
+      - name: Run security scan
+        id: scan
+        uses: ./.github/actions/security-scanner
+        with:
+          scan-path: 'test-scan'
+          fail-on-findings: 'false'
+          severity-threshold: 'medium'
+        continue-on-error: true
+      
+      - name: Display scan results
+        run: |
+          echo "Findings: ${{ steps.scan.outputs.findings-count }}"
+          echo "Critical: ${{ steps.scan.outputs.critical-count }}"
+          echo "High: ${{ steps.scan.outputs.high-count }}"
+          echo "Status: ${{ steps.scan.outputs.scan-status }}"
+      
+      - name: Clean up test file
+        if: always()
+        run: rm -rf test-scan
