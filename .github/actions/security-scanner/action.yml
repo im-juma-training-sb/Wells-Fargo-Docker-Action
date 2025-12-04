@@ -1,0 +1,31 @@
+name: 'Security Scanner'
+description: 'Scan code for hardcoded secrets, API keys, and security issues'
+author: 'Wells Fargo Training'
+
+inputs:
+  scan-path:
+    description: 'Path to scan (relative to repository root)'
+    required: false
+    default: '.'
+  fail-on-findings:
+    description: 'Fail the workflow if security issues are found'
+    required: false
+    default: 'true'
+  severity-threshold:
+    description: 'Minimum severity to report (low, medium, high, critical)'
+    required: false
+    default: 'medium'
+
+outputs:
+  findings-count:
+    description: 'Number of security findings'
+  critical-count:
+    description: 'Number of critical findings'
+  high-count:
+    description: 'Number of high severity findings'
+  scan-status:
+    description: 'Overall scan status (passed/failed)'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
